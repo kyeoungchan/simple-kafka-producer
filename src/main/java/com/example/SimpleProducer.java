@@ -43,7 +43,16 @@ public class SimpleProducer {
 
         // 토픽 이름과 message value만 전달 ➡ message key는 null
         // 제네릭: message key 타입, message value 타입
-        ProducerRecord<String, String> record = new ProducerRecord<String, String>(TOPIC_NAME, messageValue);
+//        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, messageValue);
+
+        // 토픽 이름, message key, message value 전달
+//        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, "charles", "29");
+
+        // 파티션도 직접 지정
+        // 토픽 이름, 파티션 번호, message key, message value 전달
+        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, 0, "charles2", "30");
+
+
 
         // 즉각적인 전송은 아니고, record를 프로듀서 내부에서 갖고 있다가 배치 형태로 묶어서 브로커에 전송한다.
         // 배치 전송
