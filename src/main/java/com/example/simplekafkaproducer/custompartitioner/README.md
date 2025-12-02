@@ -137,4 +137,13 @@ Process finished with exit code 0
 
 ```
 
+<br>
+
+```shell
+#producer.send(record).get() 결과
+# test 토픽에 0번 파티션에 4번 오프셋
+06:16:40.266 [main] INFO com.example.simplekafkaproducer.custompartitioner.CustomPartitionerProducer -- metadata: test-0@4
+```
+
+
 # 💻 토픽에 데이터가 전송되었는지 확인

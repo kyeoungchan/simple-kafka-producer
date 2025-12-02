@@ -412,6 +412,15 @@ Process finished with exit code 0
 
 <br>
 
+```shell
+#producer.send(record).get() 결과
+# test 토픽에 0번 파티션에 3번 오프셋
+06:14:59.936 [main] INFO com.example.SimpleProducer -- metadata: test-0@3
+```
+
+
+<br>
+
 
 # 💻 토픽에 데이터가 전송되었는지 확인
 로컬 환경에서 다음과 같이 커맨드를 실행하면 결과를 확인할 수 있다.  

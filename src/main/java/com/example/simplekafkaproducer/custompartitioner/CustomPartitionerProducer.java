@@ -1,10 +1,12 @@
 package com.example.simplekafkaproducer.custompartitioner;
 
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 /**
@@ -25,7 +27,7 @@ public class CustomPartitionerProducer {
     // 전송하고자 하는 카프카 클러스터 서버의 host와 IP를 지정한다.
     private final static String BOOTSTRAP_SERVERS = "my-kafka:9092";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         // KafkaProducer 인스턴스를 생성하기 위한 프로듀서 옵션들은 key/value 형태로 선언한다.
         Properties configs = new Properties();
@@ -52,9 +54,16 @@ public class CustomPartitionerProducer {
 
         // 즉각적인 전송은 아니고, record를 프로듀서 내부에서 갖고 있다가 배치 형태로 묶어서 브로커에 전송한다.
         // 배치 전송
-        producer.send(record);
+//        producer.send(record);
+
+        // send(): Future 객체 반환. 카프카 브로커에 정상적으로 적재되었는지에 대한 데이터 포함
+        // get(): 프로듀서로 보낸 데이터의 결과를 동기적으로 확인
+        // 프로듀서가 전송하고 난 뒤 브로커로부터 전송에 대한 응답 값을 받기 전까지 대기하기 때문에 빠른 전송에 허들이 될 수 있다.
+        RecordMetadata metadata = producer.send(record).get();
 
         log.info("record: {}", record);
+
+        log.info("metadata: {}", metadata);
 
         // 프로듀서 내부 버퍼에 있던 레코드 배치를 브로커로 전송
         producer.flush();
